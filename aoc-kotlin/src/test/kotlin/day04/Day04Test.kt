@@ -11,5 +11,8 @@ internal class Day04Test {
     fun getContainingPairSum() {
         val result = Day04.getContainingPairSum(inputFile.readText())
         assertEquals(2, result)
+
+        val resultPart2 = Day04.getContainingPairSum(inputFile.readText(), true)
+        assertEquals(4, resultPart2)
     }
 }
