@@ -31,6 +31,14 @@ internal class Day02Test {
         val match2 = Day02.getMatchByLine(line2)
         assertEquals(GameOption.ROCK, match2.enemyOption)
         assertEquals(GameOption.PAPER, match2.myOption)
+
+        val match1Part2 = Day02.getMatchByLine(line1, true)
+        assertEquals(GameOption.SCISSOR, match1Part2.enemyOption)
+        assertEquals(GameOption.PAPER, match1Part2.myOption)
+
+        val match2Part2 = Day02.getMatchByLine(line2, true)
+        assertEquals(GameOption.ROCK, match2Part2.enemyOption)
+        assertEquals(GameOption.ROCK, match2Part2.myOption)
     }
 
     @Test
@@ -48,6 +56,9 @@ internal class Day02Test {
     fun getGameResult() {
         val result = Day02.getGameResult(testFile1.readText())
         assertEquals(15, result)
+
+        val resultPart2 = Day02.getGameResult(testFile1.readText(), true)
+        assertEquals(12, resultPart2)
     }
 
 }
