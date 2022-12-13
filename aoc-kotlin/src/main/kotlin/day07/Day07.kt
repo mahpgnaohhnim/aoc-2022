@@ -4,9 +4,19 @@ import java.io.File
 
 class Day07 {
     companion object {
+        val inputFile = File(this::class.java.getResource("input.txt")?.path.orEmpty())
         fun getTotalSumSize(input: String, maxFolderSize: Int = 100000): Int {
             val rootFolder = createRootFolder(input)
             return sumUpByMaxSize(rootFolder, maxFolderSize)
+        }
+
+        fun findFolderToDelete(input: String, totalSpace: Int, freeSpaceNeeded: Int): Folder {
+            val rootFolder = createRootFolder(input)
+            val currentFreeSpace = totalSpace - rootFolder.getSize()
+            val spaceToFree = freeSpaceNeeded - currentFreeSpace
+            val possibleFolders = mutableListOf<Folder>()
+            this.findFoldersByMinSize(possibleFolders, rootFolder, spaceToFree)
+            return possibleFolders.minBy { it.getSize() }
         }
 
         fun createRootFolder(input: String): Folder {
@@ -73,17 +83,31 @@ class Day07 {
             }
             currentFolder.folderList.forEach { findFoldersByMaxSize(targetFolder, it, maxFolderSize) }
         }
+
+        fun findFoldersByMinSize(targetFolder: MutableList<Folder>, currentFolder: Folder, minFolderSize: Int) {
+            if (currentFolder.getSize() >= minFolderSize) {
+                targetFolder.add(currentFolder)
+            }
+            currentFolder.folderList.forEach { findFoldersByMinSize(targetFolder, it, minFolderSize) }
+        }
     }
 }
 
 fun main() {
-    val file = File(Day07::class.java.getResource("input.txt")?.path.orEmpty())
-    val resultPart1 = Day07.getTotalSumSize(file.readText())
+    val resultPart1 = Day07.getTotalSumSize(Day07.inputFile.readText())
+    val folderToDelete = Day07.findFolderToDelete(
+            input = Day07.inputFile.readText(),
+            totalSpace = 70000000,
+            freeSpaceNeeded = 30000000
+    )
 
     println(
             """
         resultPart1:
         $resultPart1
+        
+        resultPart2:
+        ${folderToDelete.getSize()}
     """.trimIndent()
     )
 }

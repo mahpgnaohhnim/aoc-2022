@@ -11,5 +11,9 @@ internal class Day07Test {
     fun getTotalSumSize() {
         val result = Day07.getTotalSumSize(testFile.readText())
         assertEquals(95437, result)
+
+        val folderToDelete = Day07.findFolderToDelete(testFile.readText(), 70000000, 30000000)
+        assertEquals(24933642, folderToDelete.getSize())
+        assertEquals("d", folderToDelete.name)
     }
 }
